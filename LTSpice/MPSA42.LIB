@@ -1,0 +1,52 @@
+******
+* Spice Model
+* Item: MPSA42
+* Date: 8/12/10
+* Revision History: A
+* ==========================================================
+* This model was developed by: 
+* Central Semiconductor Corp.
+* 145 Adams Avenue
+* Hauppauge, NY 11788
+*
+* These models are subject to change without notice.
+* Users may not directly or indirectly re-sell or 
+* re-distribute this model. This model may not 
+* be modified, or altered without the consent of Central Semiconductor Corp. 
+*
+* For more information on this model contact
+* Central Semiconductor Corp. at:
+* (631) 435-1110 or Engineering@centralsemi.com
+* http://www.centralsemi.com
+* ==========================================================
+******
+*SRC=MPSA42;MPSA42;BJTs NPN; Si;  300V  0.500A  50.0MHz   CS 
+.MODEL MPSA42 NPN
++ IS=18.36E-15
++ BF=60.596
++ VAF=9.2909
++ IKF=.0207
++ ISE=1.3215E-12
++ NE=1.7767
++ NF=1.15
++ BR=499.50
++ VAR=100
++ IKR=19.980
++ ISC=75E-9
++ NC=3.9970
++ RE=490.00E-6
++ RB=5.2315
++ RC=1.0000E-3
++ CJE=104.69E-12
++ VJE=1.0643
++ MJE=.41036
++ CJC=9.8356E-12
++ VJC=.35
++ MJC=.28065
++ TF=5.1798E-9
++ XTF=3.2122
++ VTF=25.040
++ ITF=.19258
++ XTB=1.5
++ TR=6.837E-6
+*******
