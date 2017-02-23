@@ -7264,6 +7264,11 @@ Switches electrical signals</description>
 <wire x1="205.74" y1="-68.58" x2="205.74" y2="-5.08" width="0.1524" layer="97" style="longdash"/>
 <wire x1="205.74" y1="-5.08" x2="119.38" y2="-5.08" width="0.1524" layer="97" style="longdash"/>
 <wire x1="119.38" y1="-5.08" x2="119.38" y2="-68.58" width="0.1524" layer="97" style="longdash"/>
+<wire x1="177.8" y1="119.38" x2="261.62" y2="119.38" width="0.1524" layer="97" style="longdash"/>
+<wire x1="261.62" y1="119.38" x2="261.62" y2="38.1" width="0.1524" layer="97" style="longdash"/>
+<wire x1="261.62" y1="38.1" x2="177.8" y2="38.1" width="0.1524" layer="97" style="longdash"/>
+<wire x1="177.8" y1="38.1" x2="177.8" y2="119.38" width="0.1524" layer="97" style="longdash"/>
+<text x="180.34" y="114.3" size="2.54" layer="97">High Side Driver for Level Shifting</text>
 </plain>
 <instances>
 <instance part="U$1" gate="G$1" x="185.42" y="-48.26"/>
@@ -7375,7 +7380,7 @@ Switches electrical signals</description>
 <instance part="P+6" gate="1" x="226.06" y="-20.32"/>
 <instance part="D1" gate="G$1" x="139.7" y="-22.86" rot="R90"/>
 <instance part="D2" gate="G$1" x="127" y="-38.1" rot="R90"/>
-<instance part="D4" gate="G$1" x="340.36" y="-27.94" rot="R180"/>
+<instance part="D4" gate="G$1" x="322.58" y="-27.94" rot="R180"/>
 <instance part="GND10" gate="1" x="139.7" y="-53.34"/>
 <instance part="GND11" gate="1" x="127" y="-53.34"/>
 <instance part="Q4" gate="G$1" x="231.14" y="86.36" rot="MR180"/>
@@ -8162,21 +8167,13 @@ Switches electrical signals</description>
 <net name="VIN" class="0">
 <segment>
 <wire x1="332.74" y1="-53.34" x2="332.74" y2="-27.94" width="0.1524" layer="91"/>
-<wire x1="332.74" y1="-27.94" x2="314.96" y2="-27.94" width="0.1524" layer="91"/>
 <label x="332.74" y="-27.94" size="1.778" layer="95"/>
-<pinref part="R30" gate="G$1" pin="2"/>
-<wire x1="314.96" y1="-30.48" x2="314.96" y2="-27.94" width="0.1524" layer="91"/>
-<pinref part="R31" gate="G$1" pin="2"/>
-<wire x1="314.96" y1="-27.94" x2="304.8" y2="-27.94" width="0.1524" layer="91"/>
-<junction x="314.96" y="-27.94"/>
-<pinref part="C17" gate="G$1" pin="2"/>
-<wire x1="304.8" y1="-43.18" x2="304.8" y2="-27.94" width="0.1524" layer="91"/>
-<wire x1="304.8" y1="-27.94" x2="302.26" y2="-27.94" width="0.1524" layer="91"/>
-<junction x="304.8" y="-27.94"/>
 <pinref part="J3" gate="G$1" pin="PWR"/>
 <wire x1="350.52" y1="-53.34" x2="332.74" y2="-53.34" width="0.1524" layer="91"/>
-<pinref part="D4" gate="G$1" pin="C"/>
-<wire x1="337.82" y1="-27.94" x2="332.74" y2="-27.94" width="0.1524" layer="91"/>
+<pinref part="D4" gate="G$1" pin="A"/>
+<wire x1="325.12" y1="-27.94" x2="332.74" y2="-27.94" width="0.1524" layer="91"/>
+<pinref part="J2" gate="G$1" pin="V+"/>
+<wire x1="347.98" y1="-27.94" x2="332.74" y2="-27.94" width="0.1524" layer="91"/>
 <junction x="332.74" y="-27.94"/>
 </segment>
 </net>
@@ -8223,13 +8220,6 @@ Switches electrical signals</description>
 <wire x1="439.42" y1="99.06" x2="439.42" y2="93.98" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$4" class="0">
-<segment>
-<pinref part="D4" gate="G$1" pin="A"/>
-<pinref part="J2" gate="G$1" pin="V+"/>
-<wire x1="342.9" y1="-27.94" x2="347.98" y2="-27.94" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="N$17" class="0">
 <segment>
 <pinref part="Q4" gate="G$1" pin="G"/>
@@ -8247,6 +8237,21 @@ Switches electrical signals</description>
 <pinref part="R18" gate="G$1" pin="2"/>
 <pinref part="Q5" gate="G$1" pin="B"/>
 <wire x1="213.36" y1="55.88" x2="215.9" y2="55.88" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$4" class="0">
+<segment>
+<pinref part="R31" gate="G$1" pin="2"/>
+<pinref part="R30" gate="G$1" pin="2"/>
+<wire x1="314.96" y1="-30.48" x2="314.96" y2="-27.94" width="0.1524" layer="91"/>
+<wire x1="314.96" y1="-27.94" x2="304.8" y2="-27.94" width="0.1524" layer="91"/>
+<wire x1="304.8" y1="-27.94" x2="302.26" y2="-27.94" width="0.1524" layer="91"/>
+<junction x="304.8" y="-27.94"/>
+<pinref part="C17" gate="G$1" pin="2"/>
+<wire x1="304.8" y1="-43.18" x2="304.8" y2="-27.94" width="0.1524" layer="91"/>
+<pinref part="D4" gate="G$1" pin="C"/>
+<wire x1="314.96" y1="-27.94" x2="320.04" y2="-27.94" width="0.1524" layer="91" style="longdash"/>
+<junction x="314.96" y="-27.94"/>
 </segment>
 </net>
 </nets>
