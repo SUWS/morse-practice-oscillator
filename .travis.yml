@@ -1,0 +1,11 @@
+---
+language: c
+addons:
+  apt:
+    packages:
+      avr-libc
+      gcc-avr
+
+script:
+  - cd firmware
+  - make
