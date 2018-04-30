@@ -16,11 +16,10 @@
 
 #include <avr/io.h>
 
-
 //Core definitions
 #include "hardware.h"
 
-//include delay after hardware.h due to F_CPU definition
+//include delay.h after hardware.h due to F_CPU definition
 #include <util/delay.h>
 
 
@@ -55,44 +54,45 @@ int main(int argc, char const *argv[])
 	KEY_IN_PORT_DDR &= ~_BV(LED_DOT);
 	KEY_IN_PORT_DDR &= ~_BV(LED_DASH);
 
-	// setting KEY_OUT (PD3) as digital out
-	KEY_OUT_PORT_DDR |= _BV(KEY_OUT);
-  
-	for (;;)
+	// set LEDs as OUTPUTS
+	KEY_LED_PORT_DDR |= _BV(LED_DOT) + _BV(LED_DASH);
+	INDICATOR_LED_DDR |= _BV(INDICATOR_LED_RED) + _BV(INDICATOR_LED_BLUE) + _BV(INDICATOR_LED_GREEN);
+
+	while(1)
 	{
-		/* code */
-		uint8_t duty_cycle = adc_read(ADC_WEIGHT);// read a value between 0-255
-		uint8_t rate = adc_read(ADC_RATE);// read adc value for channel 1
-								  //for setting the speed of the pwm at KEY_OUT pin
-								  // read a value between 0-255
+		//dot indicator LED
+		//if((KEY_IN_PORT_PIN & _BV(KEY_DOT)))
+		_delay_ms(1000);
+		KEY_LED_PORT |= _BV(LED_DOT);
+		//else
+		_delay_ms(1000);
+		KEY_LED_PORT &= ~_BV(LED_DOT);
+
+		//dash indicator LED
+		//if((KEY_IN_PORT_PIN & _BV(KEY_DASH)))
+		_delay_ms(1000);
+		KEY_LED_PORT |= _BV(LED_DASH);
+		_delay_ms(1000);
+		//else
+		KEY_LED_PORT &= ~_BV(LED_DASH);
 
 
-		if(!(KEY_IN_PORT_PIN & _BV(KEY_DOT))) // if we read a 0 (active low) from dot pin , we
-		{
-			KEY_OUT_PORT |= _BV(KEY_OUT);
-			_delay_ms(100);// offset to prevent it from going fast
-			_delay_ms(duty_cycle/rate);// remain high for this much delay time (0-255ms)
-			// dots- length of 1 time unit
-			KEY_OUT_PORT &= ~_BV(KEY_OUT);
-
-		}
-		else if(!(KEY_IN_PORT & _BV(KEY_DASH)))// if we read a 0 (active low input) from dash pin ,
-    {
-      KEY_OUT_PORT |= _BV(KEY_OUT);
-      _delay_ms(100);// offset to prevent it from going fast
-			_delay_ms(3*duty_cycle/rate);// remain high for this much delay time (0-255ms)
-			// dash- length of 3 time unit
-			KEY_OUT_PORT &= ~_BV(KEY_OUT);
-
-    }
-		//_delay_ms(rate); // 0-255 ms
-
-		/// DELAY OF 1 TIME UNIT BEWTEEEN DOTS & /OR DASHES OF A CHARCTER
-		_delay_ms(duty_cycle/rate);
-		// scale down all the delay() function by rate to adjust the speed
-
+		//indicator red
+		_delay_ms(1000);
+		INDICATOR_LED_PORT |= _BV(INDICATOR_LED_RED);
+		_delay_ms(1000);
+		INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_RED);
+		//indicator blue
+		_delay_ms(1000);
+		INDICATOR_LED_PORT |= _BV(INDICATOR_LED_BLUE);
+		_delay_ms(1000);
+		INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_BLUE);
+		//indicator green
+		_delay_ms(1000);
+		INDICATOR_LED_PORT |= _BV(INDICATOR_LED_GREEN);
+		_delay_ms(1000);
+		INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_GREEN);
 	}
-
 
 	return 0;
 }
