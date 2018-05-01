@@ -3,9 +3,9 @@ CC = avr-gcc
 OBJCOPY = avr-objcopy
 DUDE = avrdude
 
-CFLAGS = -Wall -Os -mmcu=atmega328p
+CFLAGS = -Wall -Os -mmcu=atmega328
 OBJFLAGS = -j .text -j .data -O ihex
-DUDEFLAGS = -p atmega328p -c usbasp -v
+DUDEFLAGS = -p atmega328p -c usbasp -F -v
 
 # Object files for the firmware (usbdrv/oddebug.o not strictly needed I think)
 OBJECTS = morse_code_avr.o
