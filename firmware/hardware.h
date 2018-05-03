@@ -10,7 +10,7 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#define F_CPU 2000000
+#define F_CPU 16000000
 
 /* INDICATOR LED ***************************************************/
 
