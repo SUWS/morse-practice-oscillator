@@ -10,6 +10,9 @@
 //Core definitions
 #include "hardware.h"
 
+//core libraies
+#include "uart.h"
+
 //include delay.h after hardware.h due to F_CPU definition
 #include <util/delay.h>
 
@@ -36,24 +39,6 @@ uint16_t adc_read(uint8_t ch)// [2]
 	while(ADCSRA & _BV(ADSC));
 	ADC = (ADCH << 8) | ADCL;// [1]
 	return ADC;
-}
-
-#define USART_BAUDRATE 9600
-#define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
-
-uint16_t uart_out_string(char* str)
-{
-	uint16_t length = strlen(str);
-	
-	int i=0;
-	for(i=0;i<length;i++)
-	{
-	  // Wait until last byte has been transmitted
-	  while((UCSR0A &(1<<UDRE0)) == 0);
-
-	  // Transmit data
-	  UDR0 = str[i];
-	}
 }
 
 /**************************************/
@@ -200,12 +185,8 @@ int i2c_DAC_send_value(uint16_t DAC_Value)
 int main(int argc, char const *argv[])
 {
 	adc_init();
-	// Set baud rate
-	UBRR0L = BAUD_PRESCALE;// Load lower 8-bits into the low byte of the UBRR register
-	UBRR0H = (BAUD_PRESCALE >> 8); 
-	// Enable receiver and transmitter and receive complete interrupt 
-	UCSR0B = ((1<<TXEN0)|(1<<RXEN0));
-	
+    UartInit();
+
 	// Setting PC2(dot) & PC3(dash) as digital inputs
 	KEY_IN_PORT_DDR &= ~_BV(LED_DOT);
 	KEY_IN_PORT_DDR &= ~_BV(LED_DASH);
@@ -273,46 +254,46 @@ int main(int argc, char const *argv[])
 		int adcval = adc_read(ADC_WEIGHT);
 		sprintf(tmp,"Weight :%d (%d)\r\n",adc_pos(adcval),adcval);
 		//sprintf(tmp,"Weight :%d\r\n",adc_read(ADC_WEIGHT));
-		uart_out_string(tmp);
-		
+		UartPutString(tmp);
+
 		adcval = adc_read(ADC_RATE);
 		sprintf(tmp,"Rate :%d (%d)\r\n",adc_pos(adcval),adcval);
 		//sprintf(tmp,"Rate :%d\r\n",adc_read(ADC_RATE));
-		uart_out_string(tmp);
-		
+		UartPutString(tmp);
+
 		adcval = adc_read(ADC_VOLUME);
 		sprintf(tmp,"Volume :%d (%d)\r\n",adc_pos(adcval),adcval);
 		//sprintf(tmp,"Rate :%d\r\n",adc_read(ADC_RATE));
-		uart_out_string(tmp);
-		
+		UartPutString(tmp);
+
 		adcval = adc_read(ADC_TONE);
 		sprintf(tmp,"Tone :%d (%d)\r\n",adc_pos(adcval),adcval);
 		//sprintf(tmp,"Rate :%d\r\n",adc_read(ADC_RATE));
-		uart_out_string(tmp);
-		
+		UartPutString(tmp);
+
 		adcval = adc_read(AMP_DEBUG);
 		sprintf(tmp,"Amp Debug :%d (",adcval);
 		//sprintf(tmp,"Rate :%d\r\n",adc_read(ADC_RATE));
-		uart_out_string(tmp);
-		if(adcval<128) uart_out_string("OUTL to VBAT)\r\n");
-		else if(adcval<384) uart_out_string("OUTR to VBAT)\r\n");
-		else if(adcval<640) uart_out_string("OUTL to GND)\r\n");
-		else if(adcval<896) uart_out_string("OUTR to GND)\r\n");
-		else uart_out_string("NO Fault)");
-		
+		UartPutString(tmp);
+		if(adcval<128) UartPutString("OUTL to VBAT)\r\n");
+		else if(adcval<384) UartPutString("OUTR to VBAT)\r\n");
+		else if(adcval<640) UartPutString("OUTL to GND)\r\n");
+		else if(adcval<896) UartPutString("OUTR to GND)\r\n");
+		else UartPutString("NO Fault)");
+
 		int switchPos = (KEY_MODE_PORT_PIN >> KEY_MODE)&0x01;
 		sprintf(tmp,"Switch :%d \r\n",switchPos);
-		uart_out_string(tmp);
-		
+		UartPutString(tmp);
+
 		int keyPos = (KEY_IN_PORT_PIN >> KEY_DOT)&0x01;
 		sprintf(tmp,"Dot :%d \r\n",keyPos);
-		uart_out_string(tmp);
-		
+		UartPutString(tmp);
+
 		keyPos = (KEY_IN_PORT_PIN >> KEY_DASH)&0x01;
 		sprintf(tmp,"Dash :%d \r\n",keyPos);
-		uart_out_string(tmp);
-		
-		uart_out_string("#####\r\n");
+		UartPutString(tmp);
+
+		UartPutString("#####\r\n");
 		_delay_ms(1000);
 		
 		
