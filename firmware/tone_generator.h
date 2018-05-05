@@ -5,12 +5,14 @@
 
 ********************************************************************/
 
-#ifndef MCP4725_H_
-#define MCP4725_H_
+#include <stdint.h>
+
+#ifndef TONE_GENERATOR_H_
+#define TONE_GENERATOR_H_
 
 /* FUNCTION DECLARATIONS *******************************************/
 
-int i2c_DAC_send_value(uint16_t DAC_Value);
-extern uint16_t sintab2[512];
+int ToneInit();
+int ToneTest();
 
-#endif /* MCP4725_H_ */
+#endif /* TONE_GENERATOR_H_ */

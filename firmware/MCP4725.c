@@ -13,6 +13,8 @@
 #include "hardware.h"
 #include "error_codes.h"
 
+#include "i2c.h"
+
 uint16_t sintab2[512] =
 {
 	2048, 2073, 2098, 2123, 2148, 2174, 2199, 2224,
@@ -83,41 +85,9 @@ uint16_t sintab2[512] =
 
 int i2c_DAC_send_value(uint16_t DAC_Value)
 {
-		//send a start command
-		TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
-		while ((TWCR & (1<<TWINT)) == 0);
-
-		//write address of DAC
-		TWDR = 0xC0;
-		TWCR = (1<<TWINT)|(1<<TWEN);
-		while ((TWCR & (1<<TWINT)) == 0);
-
-		//check for ack
-		if ((TWSR & 0xF8) == 0x18)
-		{
-			KEY_LED_PORT |= _BV(LED_DOT);
-			KEY_LED_PORT |= _BV(LED_DASH);
-		}
-		else
-		{
-			INDICATOR_LED_PORT |= _BV(INDICATOR_LED_RED);
-		}
-
-		//generate DAC data
-		uint8_t DACmsg[2];
-		DACmsg[0] = (DAC_Value>>8)&0x0F;
-		DACmsg[1] = DAC_Value&0xFF;
-
-		//send data
-		TWDR = DACmsg[0];
-		TWCR = (1<<TWINT)|(1<<TWEN);
-		while ((TWCR & (1<<TWINT)) == 0);
-		TWDR = DACmsg[1];
-		TWCR = (1<<TWINT)|(1<<TWEN);
-		while ((TWCR & (1<<TWINT)) == 0);
-
-		//send a stop command
-		TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN);
-
-        return SUCCESS;
+		uint8_t DACmsg[3];
+		DACmsg[0] = 0xC0;
+		DACmsg[1] = (DAC_Value>>8)&0x0F;
+		DACmsg[2] = DAC_Value&0xFF;
+		I2CSend(DACmsg,3);
 }

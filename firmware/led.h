@@ -1,16 +1,22 @@
 /********************************************************************
  File Description:
 
- definitions for the I2C interface
+ definitions for the leds
 
 ********************************************************************/
 
-#ifndef MCP4725_H_
-#define MCP4725_H_
+#ifndef LED_H_
+#define LED_H_
 
 /* FUNCTION DECLARATIONS *******************************************/
 
-int i2c_DAC_send_value(uint16_t DAC_Value);
-extern uint16_t sintab2[512];
+void LEDInit();
 
-#endif /* MCP4725_H_ */
+int UartPutString(char* str);
+
+inline void LEDDotOn();
+inline void LEDDotOff();
+inline void LEDDashOn();
+inline void LEDDashOff();
+
+#endif /* UART_H_ */

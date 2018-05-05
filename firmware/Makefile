@@ -8,7 +8,7 @@ OBJFLAGS = -j .text -j .data -O ihex
 DUDEFLAGS = -p atmega328p -c usbasp -F -v
 
 # Object files for the firmware (usbdrv/oddebug.o not strictly needed I think)
-OBJECTS = morse_code_avr.o uart.o adc.o i2c.o MCP4725.o
+OBJECTS = morse_code_avr.o uart.o adc.o i2c.o MCP4725.o led.o tone_generator.o
 
 # By default, build the firmware and command-line client, but do not flash
 all: morse_code_avr.hex
