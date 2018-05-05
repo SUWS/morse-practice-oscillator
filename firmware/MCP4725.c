@@ -85,11 +85,14 @@ uint16_t sintab2[512] =
 
 int i2c_DAC_send_value(uint16_t DAC_Value)
 {
-		uint8_t DACmsg[3];
-		DACmsg[0] = 0xC0;
-		DACmsg[1] = (DAC_Value>>8)&0x0F;
-		DACmsg[2] = DAC_Value&0xFF;
-		I2CSend(DACmsg,3);
+		volatile i2c_message_t DACmsg;
+		DACmsg.address=0xC0;
+		DACmsg.buffer[0] = (DAC_Value>>8)&0x0F;
+		DACmsg.buffer[1] = DAC_Value&0xFF;
+		DACmsg.length=2;
+		I2CSend(&DACmsg);
+
+		while(DACmsg.status!=I2C_MESSAGE_STATE_DONE);
 
 		return SUCCESS;
 }

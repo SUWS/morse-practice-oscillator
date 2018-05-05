@@ -9,12 +9,16 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/twi.h>		//I2C defintions
 
 //Core definitions
 #include "hardware.h"
 #include "error_codes.h"
 
 #define I2C_FREQ 800000
+
+uint8_t i2cState;
+i2c_message_t* i2cMessage;
 
 /*******************************************************************/
 /*! Sets up the I2C peripheral
@@ -31,44 +35,63 @@ int I2CInit()
 	I2C_DDR &= ~(_BV(I2C_SDA) | _BV(I2C_SCL));
 	I2C_PORT |= _BV(I2C_SDA) | _BV(I2C_SCL);
 
-	TWCR = _BV(TWINT) + _BV(TWEA)+_BV(TWEN);
+	TWCR = _BV(TWIE) + _BV(TWINT) + _BV(TWEA) + _BV(TWEN);
 
 	//not a slave
 	TWAR = 0;
 
+	sei();
+
 	return SUCCESS;
 }
 
-int I2CSend(uint8_t* data,uint8_t len)
+int I2CSend(i2c_message_t *message)
 {
-		//send a start command
-		TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
-		while ((TWCR & (1<<TWINT)) == 0);
+	if(i2cState!=I2C_STATE_IDLE)
+	{
+		INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_RED);
+		return(ERR_I2C_IN_USE);
+	}
+	i2cMessage=message;
+	i2cMessage->pos=0;
+	i2cMessage->status=I2C_MESSAGE_STATE_ACTIVE;
 
-		//send data
-		uint8_t i;
-		for (i=0;i<len;i++)
-		{
-			TWDR = data[i];
-			TWCR = (1<<TWINT)|(1<<TWEN);
-			while ((TWCR & (1<<TWINT)) == 0);
+	//send a start command
+	TWCR = (1<<TWIE)|(1<<TWINT)|(1<<TWSTA)|(1<<TWEN)|(1<<TWEA);
+	i2cState=I2C_STATE_ACTIVE;
 
-			//TODO handle this nicer
-			/*
-			if ((TWSR & 0xF8) != 0x18)
-			{
-				//send a stop command
-				TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN);
-				return(1);
-			}
-			*/
-		}
-
-		//send a stop command
-		TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN);
-        return SUCCESS;
+	return(SUCCESS);
 }
 
 ISR(TWI_vect,ISR_BLOCK) {
+	if(i2cState==I2C_STATE_IDLE)
+		return;
+	switch(TW_STATUS) {
+		case TW_START:
+		case TW_REP_START:
+			TWDR=i2cMessage->address;
+			TWCR=_BV(TWIE) + _BV(TWINT) + _BV(TWEA)+_BV(TWEN);
+			break;
 
+		case TW_MT_SLA_ACK:
+			TWDR=i2cMessage->buffer[i2cMessage->pos++];
+			TWCR=_BV(TWIE) + _BV(TWINT) + _BV(TWEA)+_BV(TWEN);
+			break;
+
+		case TW_MT_DATA_ACK:
+			if(i2cMessage->pos<i2cMessage->length)
+			{
+				TWDR = i2cMessage->buffer[i2cMessage->pos++];
+				TWCR=_BV(TWIE) + _BV(TWINT) + _BV(TWEA)+_BV(TWEN);
+			}
+			else
+			{
+				i2cMessage->status=I2C_MESSAGE_STATE_DONE;
+				i2cState=I2C_STATE_IDLE;
+				TWCR = _BV(TWIE) + _BV(TWINT) + _BV(TWEA)+_BV(TWEN) + _BV(TWSTO);
+			}
+			break;
+	}
+
+	return;
 }
