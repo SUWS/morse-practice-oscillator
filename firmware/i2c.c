@@ -35,6 +35,8 @@ int I2CInit()
 
 	//not a slave
 	TWAR = 0;
+
+	return SUCCESS;
 }
 
 int I2CSend(uint8_t* data,uint8_t len)

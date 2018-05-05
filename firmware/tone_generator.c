@@ -7,9 +7,16 @@
 
 #include <math.h>
 #include <avr/io.h>
-#include "MCP4725.h"
+#include <stdio.h>
+
+#include "tone_generator.h"
 
 #include "hardware.h"
+#include "error_codes.h"
+
+#include "uart.h"
+#include "MCP4725.h"
+#include "adc.h"
 
 uint8_t toneEnabled;
 volatile unsigned int advance;
@@ -24,7 +31,8 @@ static const unsigned long volumes[] = {0,0,200,300,400,512,768,1024,1200,1500,2
 int ToneInit()
 {
     toneEnabled=0;
-    advance = ((TONE_FREQ * 512UL)/ADC_RATE);
+
+    SetTone(5);
 
     return 0;
 }
@@ -51,7 +59,7 @@ int ToneTest()
             while(((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1);
             int adcval = adc_read(ADC_TONE);
             uint8_t toneid = adc_pos(adcval);
-            SetTone(toneid)
+            SetTone(toneid);
 
             adcval = adc_read(ADC_VOLUME);
             uint8_t volumeid = adc_pos(adcval);
@@ -67,11 +75,11 @@ int ToneTest()
 
         }
     }
+    return SUCCESS;
 }
 
-int SetVolume(unsigned int volumeMod)
+int SetVolume(unsigned int volumeid)
 {
-    uint32_t volumemult = (volumes[volumeid]*10);
     unsigned int volumeMod = ((2048UL*10UL)/volumes[volumeid]);
 
     int i=0;
@@ -84,11 +92,13 @@ int SetVolume(unsigned int volumeMod)
         //toneTable[i] = waveVolt;
 
     }
-
+    return SUCCESS;
 }
 
-int SetTone(toneid)
+int SetTone(unsigned int toneid)
 {
     uint32_t number = (tones[toneid] * 512UL);
     advance = (number/ADC_SAMPLE_RATE);
+
+    return SUCCESS;
 }

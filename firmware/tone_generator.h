@@ -14,5 +14,7 @@
 
 int ToneInit();
 int ToneTest();
+int SetTone(unsigned int );
+int SetVolume(unsigned int volumeid);
 
 #endif /* TONE_GENERATOR_H_ */

@@ -90,4 +90,6 @@ int i2c_DAC_send_value(uint16_t DAC_Value)
 		DACmsg[1] = (DAC_Value>>8)&0x0F;
 		DACmsg[2] = DAC_Value&0xFF;
 		I2CSend(DACmsg,3);
+
+		return SUCCESS;
 }
