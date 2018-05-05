@@ -31,6 +31,8 @@ int main(int argc, char const *argv[])
     I2CInit();
     LEDInit();
 
+    ToneInit();
+
 	// Setting PC2(dot) & PC3(dash) as digital inputs
 	KEY_IN_PORT_DDR &= ~_BV(LED_DOT);
 	KEY_IN_PORT_DDR &= ~_BV(LED_DASH);
