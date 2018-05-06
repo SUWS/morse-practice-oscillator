@@ -18,8 +18,10 @@
 #include "MCP4725.h"
 #include "adc.h"
 
-uint8_t toneEnabled;
 volatile unsigned int advance;
+
+uint8_t toneEnabled;
+uint16_t counter=0;
 
 static const unsigned long tones[] = {550,600,650,700,750,800,850,900,950,1000,1050};
 static const unsigned long volumes[] = {0,0,200,300,400,512,768,1024,1200,1500,2048};
@@ -33,26 +35,40 @@ int ToneInit()
     toneEnabled=0;
 
     SetTone(5);
+    SetVolume(5);
 
     return 0;
 }
 
+int ToneCalculateNext()
+{
+
+    uint16_t Vout=0;
+
+    start:
+    //calculate output voltage
+    Vout = 2048 + (((sintab2[counter])-2048)/4);
+    counter = (counter + advance);
+
+    if(counter>511 && (((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1))
+    {
+        counter = 0;
+        return(0);
+    }
+
+    i2c_DAC_send_value(Vout);
+
+    counter &= 511;
+    goto start;
+    return(1);
+}
+
 int ToneTest()
 {
-    uint16_t counter=0;
+
     while(1)
     {
-        while(counter<=511)
-        {
-            uint16_t Vout=0;
-
-            //calculate output voltage
-            Vout = 2048 + (((sintab2[counter])-2048)/4);
-            i2c_DAC_send_value(Vout);
-
-            counter = (counter + advance);
-        }
-        counter &= 511;
+        while(ToneCalculateNext());
 
         if(((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1)
         {
