@@ -88,7 +88,12 @@ ISR(TWI_vect,ISR_BLOCK) {
 			{
 				i2cMessage->status=I2C_MESSAGE_STATE_DONE;
 				i2cState=I2C_STATE_IDLE;
-				TWCR = _BV(TWIE) + _BV(TWINT) + _BV(TWEA)+_BV(TWEN) + _BV(TWSTO);
+
+				//if no next tone then send a stop signal (repeted start sent otherwise)
+				if(ToneCalculateNext())
+				{
+					TWCR = _BV(TWIE) + _BV(TWINT) + _BV(TWEA)+_BV(TWEN) + _BV(TWSTO);
+				}
 			}
 			break;
 	}

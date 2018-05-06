@@ -45,22 +45,31 @@ int ToneCalculateNext()
 
     uint16_t Vout=0;
 
-    start:
     //calculate output voltage
     Vout = 2048 + (((sintab2[counter])-2048)/4);
     counter = (counter + advance);
 
-    if(counter>511 && (((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1))
+    if(counter>511 && (toneEnabled==0))
     {
         counter = 0;
-        return(0);
+        return(INF_TONE_GENERATOR_HALTED);
     }
 
+    //send value to DAC
     i2c_DAC_send_value(Vout);
 
     counter &= 511;
-    goto start;
-    return(1);
+    return(SUCCESS);
+}
+
+int ToneStart()
+{
+    if(toneEnabled==1)
+        return(INF_TONE_GENERATOR_ALREADY_ACTIVE);
+    toneEnabled=1;
+    counter=0;
+    ToneCalculateNext();
+    return SUCCESS;
 }
 
 int ToneTest()
@@ -68,11 +77,11 @@ int ToneTest()
 
     while(1)
     {
-        while(ToneCalculateNext());
-
         if(((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1)
         {
+            toneEnabled=0;
             while(((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1);
+            ToneStart();
             int adcval = adc_read(ADC_TONE);
             uint8_t toneid = adc_pos(adcval);
             SetTone(toneid);

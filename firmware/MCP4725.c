@@ -15,6 +15,8 @@
 
 #include "i2c.h"
 
+volatile i2c_message_t DACmsg;
+
 uint16_t sintab2[512] =
 {
 	2048, 2073, 2098, 2123, 2148, 2174, 2199, 2224,
@@ -85,14 +87,11 @@ uint16_t sintab2[512] =
 
 int i2c_DAC_send_value(uint16_t DAC_Value)
 {
-		volatile i2c_message_t DACmsg;
 		DACmsg.address=0xC0;
 		DACmsg.buffer[0] = (DAC_Value>>8)&0x0F;
 		DACmsg.buffer[1] = DAC_Value&0xFF;
 		DACmsg.length=2;
 		I2CSend(&DACmsg);
-
-		while(DACmsg.status!=I2C_MESSAGE_STATE_DONE);
 
 		return SUCCESS;
 }
