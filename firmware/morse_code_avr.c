@@ -37,35 +37,44 @@ int main(int argc, char const *argv[])
 	KEY_IN_PORT_DDR &= ~_BV(LED_DOT);
 	KEY_IN_PORT_DDR &= ~_BV(LED_DASH);
 
-	/*
-	 * I2C TEST
-	 */
-    ToneTest();
-
-	_delay_ms(5000);
-
-	/*
-	 * END I2C TEST
-	 */
-
 	while(1)
 	{
+        //start/stop tone
+        if(((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1)
+        {
+            ToneStop();
+        }
+        else
+        {
+            if(!ToneEnabled())
+            {
+                //update the tone setting
+                int adcval = adc_read(ADC_TONE);
+                uint8_t toneid = adc_pos(adcval);
+                SetTone(toneid);
+
+                //update the volumeSetting
+                adcval = adc_read(ADC_VOLUME);
+                uint8_t volumeid = adc_pos(adcval);
+                SetVolume(volumeid);
+
+                ToneStart();
+            }
+        }
+
 		//dot indicator LED
-		//if((KEY_IN_PORT_PIN & _BV(KEY_DOT)))
-		_delay_ms(1000);
-		LEDDotOn();
-		//else
-		_delay_ms(1000);
-		LEDDotOff();
+		if(!(KEY_IN_PORT_PIN & _BV(KEY_DOT)))
+		      LEDDotOn();
+		else
+		      LEDDotOff();
 
 		//dash indicator LED
-		//if((KEY_IN_PORT_PIN & _BV(KEY_DASH)))
-		_delay_ms(1000);
-		LEDDashOn();
-		_delay_ms(1000);
-		//else
-		LEDDashOff();
+		if(!(KEY_IN_PORT_PIN & _BV(KEY_DASH)))
+		      LEDDashOn();
+		else
+		      LEDDashOff();
 
+        /*
 
 		//indicator red
 		_delay_ms(1000);
@@ -129,7 +138,7 @@ int main(int argc, char const *argv[])
 		UartPutString("#####\r\n");
 		_delay_ms(1000);
 
-
+        */
 	}
 
 	return 0;

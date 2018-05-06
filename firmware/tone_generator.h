@@ -13,7 +13,10 @@
 /* FUNCTION DECLARATIONS *******************************************/
 
 int ToneInit();
-int ToneTest();
+int ToneCalculateNext();
+int ToneStart();
+int ToneStop();
+int ToneEnabled();
 int SetTone(unsigned int );
 int SetVolume(unsigned int volumeid);
 

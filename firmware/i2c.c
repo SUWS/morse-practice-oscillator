@@ -15,6 +15,8 @@
 #include "hardware.h"
 #include "error_codes.h"
 
+#include "tone_generator.h"
+
 #define I2C_FREQ 800000
 
 uint8_t i2cState;
