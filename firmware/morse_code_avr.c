@@ -22,6 +22,7 @@
 #include "MCP4725.h"
 #include "led.h"
 #include "tone_generator.h"
+#include "keying.h"
 
 
 int main(int argc, char const *argv[])
@@ -32,6 +33,7 @@ int main(int argc, char const *argv[])
     LEDInit();
 
     ToneInit();
+    KeyingInit();
 
 	// Setting PC2(dot) & PC3(dash) as digital inputs
 	KEY_IN_PORT_DDR &= ~_BV(LED_DOT);
@@ -40,6 +42,10 @@ int main(int argc, char const *argv[])
 	while(1)
 	{
         //start/stop tone
+        if((KEY_MODE_PORT_PIN >> KEY_MODE)&0x01==1)
+        {
+        INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_GREEN);
+
         if(((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1)
         {
             ToneStop();
@@ -60,6 +66,12 @@ int main(int argc, char const *argv[])
 
                 ToneStart();
             }
+        }
+        }
+        else
+        {
+            INDICATOR_LED_PORT |= _BV(INDICATOR_LED_GREEN);
+            KeyingProcess();
         }
 
 		//dot indicator LED
