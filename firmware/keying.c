@@ -118,9 +118,9 @@ int KeyingProcess()
             }
             if(!(KEY_IN_PORT_PIN & _BV(KEY_DASH)))
             {
-                KeyingSetSymbol(1);
+                KeyingSetSymbol(3);
                 ToneStart();
-                keyerLastAction=KEYER_ACTION_DOT;
+                keyerLastAction=KEYER_ACTION_DASH;
             }
             else
             {
