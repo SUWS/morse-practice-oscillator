@@ -27,7 +27,7 @@
 
 int main(int argc, char const *argv[])
 {
-	adc_init();
+	ADCInit();
     UartInit();
     I2CInit();
     LEDInit();
@@ -54,16 +54,6 @@ int main(int argc, char const *argv[])
         {
             if(!ToneEnabled())
             {
-                //update the tone setting
-                int adcval = adc_read(ADC_TONE);
-                uint8_t toneid = adc_pos(adcval);
-                SetTone(toneid);
-
-                //update the volumeSetting
-                adcval = adc_read(ADC_VOLUME);
-                uint8_t volumeid = adc_pos(adcval);
-                SetVolume(volumeid);
-
                 ToneStart();
             }
         }
@@ -73,6 +63,8 @@ int main(int argc, char const *argv[])
             INDICATOR_LED_PORT |= _BV(INDICATOR_LED_GREEN);
             KeyingProcess();
         }
+
+        ADCProcess();
 
 		//dot indicator LED
 		if(!(KEY_IN_PORT_PIN & _BV(KEY_DOT)))

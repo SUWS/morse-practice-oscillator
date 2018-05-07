@@ -19,4 +19,7 @@
 int KeyingInit();
 int KeyingProcess();
 
+int KeyingSetRate();
+int KeyingSetWeight();
+
 #endif /* KEYING_H_ */

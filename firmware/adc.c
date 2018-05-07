@@ -5,19 +5,35 @@
 
 ********************************************************************/
 
+#include "adc.h"
+
 #include <avr/io.h>
 
 //Core definitions
 #include "hardware.h"
 #include "error_codes.h"
 
+#include "tone_generator.h"
+#include "keying.h"
+
+Dials_t dials[] = {
+    {ADC_TONE,5,SetTone},
+    {ADC_VOLUME,5,SetVolume},
+    {ADC_RATE,5,KeyingSetRate},
+    {ADC_WEIGHT,5,KeyingSetWeight},
+    {0,0,0},
+};
+
+uint8_t dialid;
+
 /**************************************/
 /*! Sets up the ADC peripheral on the chip
  *
  * \retval #SUCCESS
  */
-void adc_init()
+void ADCInit()
 {
+    dialid=0;
     // AREF = AVcc ie. select Vcc as reference voltage by setting REFS1:0 = 01
     ADMUX = (1<<REFS0);
 
@@ -25,24 +41,51 @@ void adc_init()
     //and prescaler of 128 by setting ADP2:0 to 1
     // ie. 16000000/128 = 125000
     ADCSRA |= _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
+
+    //start reading of first dial
+    ADCStartRead(dials[dialid].id);
+}
+
+int ADCProcess()
+{
+    //if last conversion has finished
+    if(!(ADCSRA & _BV(ADSC)))
+    {
+        //run callback for previous
+        int dialval = adc_pos(ADC);
+        if (dialval!=dials[dialid].lastValue)
+        {
+            dials[dialid].lastValue=dialval;
+            dials[dialid].callback(dialval);
+        }
+
+        //get next dial
+        dialid++;
+        if(dials[dialid].callback==0)
+        {
+            //INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_BLUE);
+            dialid=0;
+        }
+
+        //start next dial
+        ADCStartRead(dials[dialid].id);
+    }
+
+    return(SUCCESS);
 }
 
 /**************************************/
-/*! Reads an ADC channel on the chip
+/*! Starts an ADC reading for a given channel
  *
  * \param ch Channel to read from
- * \retval value of ADC channel
+ * \retval #SUCCESS
  */
-uint16_t adc_read(uint8_t ch)// [2]
+int ADCStartRead(uint8_t ch)// [2]
 {
 	ADMUX = ch;// represents PA2
 	// start conversion
 	ADCSRA |= _BV(ADSC);
-	// wait for conversion to complete
-	//while(!(ADCSRA & _BV(ADIF))){};
-	while(ADCSRA & _BV(ADSC));
-	ADC = (ADCH << 8) | ADCL;// [1]
-	return ADC;
+    return(SUCCESS);
 }
 
 /**************************************/
