@@ -6,3 +6,11 @@
 *.elf
 *.hex
 *.o
+
+#CAD outputs
+*.dxf
+*.stp
+*.stl
+*.lck
+OldVersions
+*.htm
