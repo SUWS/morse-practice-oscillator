@@ -46,6 +46,13 @@ void ADCInit()
     ADCStartRead(dials[dialid].id);
 }
 
+/**************************************/
+/*! Process to read settings from the ADC chanels
+ *
+ * Reads each channel in turn and triggers calbacks if the value has updated
+ *
+ * \retval #SUCCESS
+ */
 int ADCProcess()
 {
     //if last conversion has finished

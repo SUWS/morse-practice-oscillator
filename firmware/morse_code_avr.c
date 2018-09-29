@@ -41,27 +41,29 @@ int main(int argc, char const *argv[])
 
 	while(1)
 	{
-        //start/stop tone
+        //Check for slected mode
         if((KEY_MODE_PORT_PIN >> KEY_MODE)&0x01==1)
+		{
+			//Paddle key mode
+			INDICATOR_LED_PORT |= _BV(INDICATOR_LED_GREEN);
+			KeyingProcess();
+		}
+		else
         {
-        INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_GREEN);
+			//Straight key mode
+	        INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_GREEN);
 
-        if(((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1)
-        {
-            ToneStop();
-        }
-        else
-        {
-            if(!ToneEnabled())
-            {
-                ToneStart();
-            }
-        }
-        }
-        else
-        {
-            INDICATOR_LED_PORT |= _BV(INDICATOR_LED_GREEN);
-            KeyingProcess();
+	        if(((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1)
+	        {
+	            ToneStop();
+	        }
+	        else
+	        {
+	            if(!ToneEnabled())
+	            {
+	                ToneStart();
+	            }
+	        }
         }
 
         ADCProcess();
