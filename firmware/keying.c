@@ -116,15 +116,18 @@ int KeyingProcess()
                 ToneStart();
                 keyerLastAction=KEYER_ACTION_DOT;
             }
-            if(!(KEY_IN_PORT_PIN & _BV(KEY_DASH)))
-            {
-                KeyingSetSymbol(3);
-                ToneStart();
-                keyerLastAction=KEYER_ACTION_DASH;
-            }
             else
             {
-                ToneStop();
+                if(!(KEY_IN_PORT_PIN & _BV(KEY_DASH)))
+                {
+                    KeyingSetSymbol(3);
+                    ToneStart();
+                    keyerLastAction=KEYER_ACTION_DASH;
+                }
+                else
+                {
+                    ToneStop();
+                }
             }
             break;
         case KEYER_ACTION_DOT:
