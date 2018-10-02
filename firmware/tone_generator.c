@@ -17,6 +17,7 @@
 #include "uart.h"
 #include "MCP4725.h"
 #include "adc.h"
+#include "wave.h"
 
 volatile unsigned int advance;  //!< amount to advance though the wave table on each step
 

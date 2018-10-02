@@ -20,7 +20,7 @@
 #define I2C_FREQ 800000
 
 uint8_t i2cState;
-i2c_message_t* i2cMessage;
+volatile i2c_message_t* i2cMessage;
 
 /*******************************************************************/
 /*! Sets up the I2C peripheral
