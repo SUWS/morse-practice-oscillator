@@ -6,8 +6,9 @@
 ********************************************************************/
 
 #include "wave.h"
+#include <avr/pgmspace.h>;
 
-uint16_t sintab2[512] =
+uint16_t PROGMEM sintab2[512] =
 {
 	2048, 2073, 2098, 2123, 2148, 2174, 2199, 2224,
 	2249, 2274, 2299, 2324, 2349, 2373, 2398, 2423,
@@ -77,5 +78,5 @@ uint16_t sintab2[512] =
 
 uint16_t WaveGetPoint(uint16_t pos)
 {
-    return sintab2[pos];
+    return pgm_read_word_near(sintab2 + pos);
 }
