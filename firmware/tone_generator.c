@@ -23,6 +23,7 @@ volatile unsigned int advance;  //!< amount to advance though the wave table on 
 
 uint8_t toneEnabled;    //!< bool to store the current state of the generator
 uint16_t counter=0;     //!< current position in the wave table
+uint16_t sinvol[512];
 
 static const unsigned long tones[] = {550,600,650,700,750,800,850,900,950,1000,1050};
 static const unsigned long volumes[] = {0,0,200,300,400,512,768,1024,1200,1500,2048};
@@ -56,8 +57,8 @@ int ToneCalculateNext()
 
     uint16_t Vout=0;
 
-    //calculate output voltage
-    Vout = 2048 + (((WaveGetPoint(counter))-2048)/4);
+    //get output voltage
+    Vout = sinvol[counter];
     counter = (counter + advance);
 
     if(counter>511 && (toneEnabled==0))
@@ -121,11 +122,11 @@ int SetVolume(unsigned int volumeid)
     int i=0;
     for(i=0;i<512;i++)
     {
-        int32_t midvolt = WaveGetPoint(i);
+        int32_t midVolt = WaveGetPoint(i);
         midVolt-= 2048;
         int32_t waveVolt = (midVolt*10)/volumeMod;
         waveVolt+=2048;
-        //toneTable[i] = waveVolt;
+        sinvol[i] = waveVolt;
 
     }
     return SUCCESS;
