@@ -57,7 +57,7 @@ int ToneCalculateNext()
     uint16_t Vout=0;
 
     //calculate output voltage
-    Vout = 2048 + (((sintab2[counter])-2048)/4);
+    Vout = 2048 + (((WaveGetPoint(counter))-2048)/4);
     counter = (counter + advance);
 
     if(counter>511 && (toneEnabled==0))
@@ -121,7 +121,7 @@ int SetVolume(unsigned int volumeid)
     int i=0;
     for(i=0;i<512;i++)
     {
-        int32_t midVolt = sintab2[i];
+        int32_t midvolt = WaveGetPoint(i);
         midVolt-= 2048;
         int32_t waveVolt = (midVolt*10)/volumeMod;
         waveVolt+=2048;

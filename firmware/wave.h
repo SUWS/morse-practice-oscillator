@@ -5,12 +5,13 @@
 
 ********************************************************************/
 
+#include <stdint.h>
+
 #ifndef WAVE_H_
 #define WAVE_H_
 
 /* FUNCTION DECLARATIONS *******************************************/
 
-extern uint16_t sintab2[512];
-
+uint16_t WaveGetPoint(uint16_t pos);
 
 #endif /* WAVE_H_ */
