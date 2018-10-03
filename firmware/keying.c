@@ -36,15 +36,16 @@ int KeyingInit()
 
     TIFR1 = _BV(OCF1A) + _BV(OCF1B);
 
+    return(SUCCESS);
 }
 
-int KeyingSetRate(int rateid)
+int KeyingSetRate(uint8_t rateid)
 {
     keyerRate=rateid;
     return(SUCCESS);
 }
 
-int KeyingSetWeight(int weightid)
+int KeyingSetWeight(uint8_t weightid)
 {
     keyerWeight=weightid;
     return(SUCCESS);
@@ -57,6 +58,7 @@ int KeyingSetSymbol(int length)
     OCR1B = (rates[keyerRate]*(length+1));
     TCNT1 = 0;
     TIFR1 = _BV(OCF1A) + _BV(OCF1B);
+    return(SUCCESS);
 }
 
 int KeyingGetNextAction()
@@ -103,6 +105,7 @@ int KeyingGetNextAction()
     {
         keyerLastAction=KEYER_ACTION_NONE;
     }
+    return(SUCCESS);
 }
 
 int KeyingProcess()
@@ -146,4 +149,5 @@ int KeyingProcess()
         default:
             INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_RED);
     }
+    return(SUCCESS);
 }

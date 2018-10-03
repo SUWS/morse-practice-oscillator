@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
 	while(1)
 	{
         //Check for slected mode
-        if((KEY_MODE_PORT_PIN >> KEY_MODE)&0x01==1)
+        if(((KEY_MODE_PORT_PIN >> KEY_MODE)&0x01)==1)
 		{
 			//Paddle key mode
 			INDICATOR_LED_PORT |= _BV(INDICATOR_LED_GREEN);

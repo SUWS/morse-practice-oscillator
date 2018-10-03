@@ -29,6 +29,6 @@ typedef struct {
 /* FUNCTION DECLARATIONS *******************************************/
 
 int I2CInit();
-int I2CSend(i2c_message_t *message);
+int I2CSend(volatile i2c_message_t *message);
 
 #endif /* I2C_H_ */

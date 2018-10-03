@@ -115,7 +115,7 @@ int ToneEnabled()
  * \param volumeid position of the volume selector
  * \return #SUCCESS
  *******************************************************************/
-int SetVolume(unsigned int volumeid)
+int SetVolume(uint8_t volumeid)
 {
     unsigned int volumeMod = ((2048UL*10UL)/volumes[volumeid]);
 
@@ -138,7 +138,7 @@ int SetVolume(unsigned int volumeid)
  * \param volumeid position of the tone selector
  * \return #SUCCESS
  *******************************************************************/
-int SetTone(unsigned int toneid)
+int SetTone(uint8_t toneid)
 {
     uint32_t number = (tones[toneid] * 512UL);
     advance = (number/ADC_SAMPLE_RATE);

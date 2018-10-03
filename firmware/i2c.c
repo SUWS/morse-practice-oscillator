@@ -47,7 +47,7 @@ int I2CInit()
 	return SUCCESS;
 }
 
-int I2CSend(i2c_message_t *message)
+int I2CSend(volatile i2c_message_t *message)
 {
 	if(i2cState!=I2C_STATE_IDLE)
 	{

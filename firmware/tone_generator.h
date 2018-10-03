@@ -17,7 +17,7 @@ int ToneCalculateNext();
 int ToneStart();
 int ToneStop();
 int ToneEnabled();
-int SetTone(unsigned int );
-int SetVolume(unsigned int volumeid);
+int SetTone(uint8_t toneid);
+int SetVolume(uint8_t volumeid);
 
 #endif /* TONE_GENERATOR_H_ */
