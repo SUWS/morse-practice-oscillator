@@ -12176,7 +12176,7 @@ DIN A3, landscape with location and doc. field</description>
 <label x="243.84" y="93.98" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="ADC_RATE" class="0">
+<net name="ADC_WEIGHT" class="0">
 <segment>
 <pinref part="U$6" gate="G$1" pin="S"/>
 <wire x1="81.28" y1="210.82" x2="88.9" y2="210.82" width="0.1524" layer="91"/>
@@ -12189,7 +12189,7 @@ DIN A3, landscape with location and doc. field</description>
 <pinref part="U1" gate="U$1" pin="PC1(ADC1)"/>
 </segment>
 </net>
-<net name="ADC_WEIGHT" class="0">
+<net name="ADC_RATE" class="0">
 <segment>
 <pinref part="U$6" gate="G$2" pin="S"/>
 <wire x1="104.14" y1="210.82" x2="111.76" y2="210.82" width="0.1524" layer="91"/>

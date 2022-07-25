@@ -47,8 +47,8 @@
 #define ADC_SETTINGS_PORT_PIN PINC //!< pin register for potentiometer input
 #define ADC_SETTINGS_PORT_DDR DDRC  //!< data direction register for potentiometer input
 
-#define ADC_WEIGHT PC0            //!< weight setting input
-#define ADC_RATE PC1              //!< rate setting input
+#define ADC_RATE PC0              //!< rate setting input
+#define ADC_WEIGHT PC1            //!< weight setting input
 #define ADC_VOLUME PC2            //!< weight setting input
 #define ADC_TONE PC3              //!< rate setting input
 
