@@ -22,15 +22,16 @@
 volatile unsigned int advance;  //!< amount to advance though the wave table on each step
 
 uint8_t toneEnabled;    //!< bool to store the current state of the generator
+uint8_t toneZeroed;     //!< bool to store if the tone has been set to zero or not
 uint16_t counter=0;     //!< current position in the wave table
 uint16_t sinvol[512];
 
 static const unsigned long tones[] = {550,600,650,700,750,800,850,900,950,1000,1050};
-static const unsigned long volumes[] = {0,0,200,300,400,512,768,1024,1200,1500,2048};
+static const unsigned long volumes[] = {10,17,29,49,84,143,244,415,706,1203,2048};
 
 #define TONE_FREQ 800UL //tone frequency in Hz
-#define TONE_VOLUME 512
-#define ADC_SAMPLE_RATE 25000UL //update rate of ADC in Hz
+#define TONE_VOLUME 143
+#define ADC_SAMPLE_RATE 15620UL //update rate of ADC in Hz
 
 /*******************************************************************/
 /*! Sets up the Tone generator in the default off state
@@ -40,6 +41,7 @@ static const unsigned long volumes[] = {0,0,200,300,400,512,768,1024,1200,1500,2
 int ToneInit()
 {
     toneEnabled=0;
+    toneZeroed=1;
 
     SetTone(5);
     SetVolume(5);
@@ -63,7 +65,16 @@ int ToneCalculateNext()
 
     if(counter>511 && (toneEnabled==0))
     {
-        return(INF_TONE_GENERATOR_HALTED);
+        if(toneZeroed)
+        {
+            return(INF_TONE_GENERATOR_HALTED);
+        }
+        else
+        {
+            i2c_DAC_send_value(2048);
+            toneZeroed = 1;
+            return(SUCCESS);
+        }
     }
 
     //send value to DAC
@@ -83,6 +94,7 @@ int ToneStart()
     if(toneEnabled==1)
         return(INF_TONE_GENERATOR_ALREADY_ACTIVE);
     toneEnabled=1;
+    toneZeroed=0;
     counter=0;
     ToneCalculateNext();
     return SUCCESS;
