@@ -17,6 +17,9 @@ all: morse_code_avr.hex
 flash: morse_code_avr.hex
 	$(DUDE) $(DUDEFLAGS) -U flash:w:$<
 
+flash_test: hardware_test.hex
+	$(DUDE) $(DUDEFLAGS) -U flash:w:$<
+
 eeprom: morse_code_avr.eep
 	$(DUDE) $(DUDEFLAGS) -U eeprom:w:$<
 
@@ -31,6 +34,9 @@ clean:
 # Main.elf requires additional objects to the firmware, not just main.o
 morse_code_avr.elf: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@
+
+hardware_test.elf: hardware_test.c led.c uart.c
+	$(CC) $(CFLAGS) hardware_test.c led.c uart.c -o $@
 
 # Without this dependance, .o files will not be recompiled if you change
 # the config! I spent a few hours debugging because of this...
