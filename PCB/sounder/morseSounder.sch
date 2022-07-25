@@ -11517,12 +11517,12 @@ DIN A3, landscape with location and doc. field</description>
 <part name="U$10" library="morseSounder" deviceset="MAX13331" device=""/>
 <part name="C4" library="SparkFun" deviceset="CAP" device="0805" value="330n"/>
 <part name="C5" library="SparkFun" deviceset="CAP" device="0805" value="330n"/>
-<part name="R4" library="SparkFun" deviceset="RESISTOR" device="0805-RES" value="30K"/>
-<part name="R5" library="SparkFun" deviceset="RESISTOR" device="0805-RES" value="30K"/>
-<part name="R6" library="SparkFun" deviceset="RESISTOR" device="0805-RES" value="45K"/>
-<part name="R7" library="SparkFun" deviceset="RESISTOR" device="0805-RES" value="45K"/>
+<part name="R4" library="SparkFun" deviceset="RESISTOR" device="0805-RES" value="62K"/>
+<part name="R5" library="SparkFun" deviceset="RESISTOR" device="0805-RES" value="62K"/>
+<part name="R6" library="SparkFun" deviceset="RESISTOR" device="0805-RES" value="24K"/>
+<part name="R7" library="SparkFun" deviceset="RESISTOR" device="0805-RES" value="24K"/>
 <part name="C6" library="SparkFun" deviceset="CAP" device="0805" value="1n"/>
-<part name="C7" library="SparkFun" deviceset="CAP" device="0805" value="1u"/>
+<part name="C7" library="SparkFun" deviceset="CAP" device="0805" value="10u"/>
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -11532,8 +11532,8 @@ DIN A3, landscape with location and doc. field</description>
 <part name="GND12" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="R8" library="SparkFun" deviceset="RESISTOR" device="0805-RES" value="10K"/>
 <part name="C12" library="SparkFun" deviceset="CAP" device="0805" value="1u"/>
-<part name="C13" library="SparkFun" deviceset="CAP" device="0805" value="1u"/>
-<part name="C14" library="SparkFun" deviceset="CAP" device="0805" value="100n"/>
+<part name="C13" library="SparkFun" deviceset="CAP" device="0805" value="10u"/>
+<part name="C14" library="SparkFun" deviceset="CAP" device="0805" value="10u"/>
 <part name="C15" library="SparkFun" deviceset="CAP" device="0805" value="100n"/>
 <part name="GND14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="TP9" library="SparkFun-Connectors" deviceset="TEST-POINT" device="3X5"/>
