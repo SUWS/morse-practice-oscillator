@@ -5,6 +5,7 @@
 
 ********************************************************************/
 
+#include "led.h"
 #include <avr/io.h>
 
 //Core definitions
@@ -37,4 +38,35 @@ inline void LEDDashOn()
 inline void LEDDashOff()
 {
     KEY_LED_PORT |= _BV(LED_DASH);
+}
+
+inline void LEDPowerSet(uint8_t colourCode)
+{
+    if(colourCode & POWER_COLOUR_RED)
+    {
+        INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_RED);
+    }
+    else
+    {
+        INDICATOR_LED_PORT |= _BV(INDICATOR_LED_RED);
+    }
+
+    if(colourCode & POWER_COLOUR_GREEN)
+    {
+        INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_GREEN);
+    }
+    else
+    {
+        INDICATOR_LED_PORT |= _BV(INDICATOR_LED_GREEN);
+    }
+
+    if(colourCode & POWER_COLOUR_BLUE)
+    {
+        INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_BLUE);
+    }
+    else
+    {
+        INDICATOR_LED_PORT |= _BV(INDICATOR_LED_BLUE);
+    }
+
 }

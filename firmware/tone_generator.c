@@ -80,8 +80,6 @@ int ToneCalculateNext()
  *******************************************************************/
 int ToneStart()
 {
-    INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_RED);
-
     if(toneEnabled==1)
         return(INF_TONE_GENERATOR_ALREADY_ACTIVE);
     toneEnabled=1;
@@ -97,8 +95,6 @@ int ToneStart()
  *******************************************************************/
 int ToneStop()
 {
-    INDICATOR_LED_PORT |= _BV(INDICATOR_LED_RED);
-
     toneEnabled=0;
     return SUCCESS;
 }

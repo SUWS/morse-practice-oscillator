@@ -45,20 +45,27 @@ int main(int argc, char const *argv[])
         if(((KEY_MODE_PORT_PIN >> KEY_MODE)&0x01)==1)
 		{
 			//Paddle key mode
-			INDICATOR_LED_PORT |= _BV(INDICATOR_LED_GREEN);
 			KeyingProcess();
+			if(ToneEnabled())
+			{
+				LEDPowerSet(POWER_COLOUR_RED);
+			}
+			else
+			{
+				LEDPowerSet(POWER_COLOUR_BLUE);
+			}
 		}
 		else
         {
 			//Straight key mode
-	        INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_GREEN);
-
 	        if(((KEY_IN_PORT_PIN >> KEY_STRAIGHT)&0x01)==1)
 	        {
+				LEDPowerSet(POWER_COLOUR_GREEN);
 	            ToneStop();
 	        }
 	        else
 	        {
+				LEDPowerSet(POWER_COLOUR_RED);
 	            if(!ToneEnabled())
 	            {
 	                ToneStart();

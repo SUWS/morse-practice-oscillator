@@ -51,7 +51,6 @@ int I2CSend(volatile i2c_message_t *message)
 {
 	if(i2cState!=I2C_STATE_IDLE)
 	{
-		INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_RED);
 		return(ERR_I2C_IN_USE);
 	}
 	i2cMessage=message;

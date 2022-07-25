@@ -147,7 +147,7 @@ int KeyingProcess()
             }
             break;
         default:
-            INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_RED);
+            break;
     }
     return(SUCCESS);
 }

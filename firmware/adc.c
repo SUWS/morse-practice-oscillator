@@ -70,7 +70,6 @@ int ADCProcess()
         dialid++;
         if(dials[dialid].callback==0)
         {
-            //INDICATOR_LED_PORT &= ~_BV(INDICATOR_LED_BLUE);
             dialid=0;
         }
 
